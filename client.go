@@ -525,7 +525,9 @@ func (fn *rpcFunc) handleRpcCall(args []reflect.Value) (results []reflect.Value)
 	for attempt := 0; true; attempt++ {
 		resp, err = fn.client.sendRequest(ctx, req, chCtor)
 		if err != nil {
-			return fn.processError(fmt.Errorf("sendRequest failed: %w", err))
+			//return fn.processError(fmt.Errorf("sendRequest failed: %w", err))
+			log.Errorf("sendRequest failed: %w", err)
+			continue
 		}
 
 		if resp.ID != *req.ID {
