@@ -549,6 +549,12 @@ func (fn *rpcFunc) handleRpcCall(args []reflect.Value) (results []reflect.Value)
 			continue
 		}
 
+		if resp.Error != nil && resp.Error.Code == 2 {
+			log.Errorf("websocket failed: %w", resp.Error)
+			time.Sleep(b.next(attempt))
+			continue
+		}
+
 		if resp.ID != *req.ID {
 			return fn.processError(xerrors.New("request and response id didn't match"))
 		}
